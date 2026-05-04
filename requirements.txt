@@ -1,0 +1,11 @@
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+fastapi
+uvicorn
+sqlalchemy
+python-dotenv
+plyer
+schedule
+beautifulsoup4
+requests

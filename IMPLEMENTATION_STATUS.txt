@@ -1,0 +1,49 @@
+# AI Email Automater - Implementation Status
+
+## What has been implemented:
+
+1. **Backend Infrastructure (FastAPI)**
+   - API layer built with FastAPI to handle communication between the frontend and core logic.
+   - Routes implemented for:
+     - `/emails`: Fetching and filtering stored emails.
+     - `/chat`: Interface for querying your inbox using AI.
+     - `/sync`: Manual trigger for email synchronization.
+
+2. **Core AI & Logic**
+   - **Email Fetcher**: Robust integration with Gmail API to pull latest messages.
+   - **AI Classifier**: Automatically categorizes emails (e.g., Personal, Work, Marketing) and assigns priority scores (1-10).
+   - **Database Layer**: SQLite implementation using SQLAlchemy for local storage of email metadata and AI analysis results.
+   - **Background Worker**: A standalone script that runs every 15 minutes to fetch new emails and send desktop notifications for high-priority (Urgent) messages.
+
+3. **Frontend Dashboard (React + Vite)**
+   - Modern, responsive dashboard built with React and Tailwind CSS.
+   - Real-time display of categorized emails.
+   - High-priority email highlighting.
+
+---
+
+## How to Run the Application:
+
+To get the full system running, you need to start three separate processes:
+
+### 1. Start the Backend API
+This provides the data for the frontend.
+```powershell
+uvicorn api.main:app --reload
+```
+
+### 2. Start the Background Sync Worker
+This handles automatic email fetching and priority notifications.
+```powershell
+python -m core.main_worker
+```
+
+### 3. Start the Frontend
+Open a new terminal, navigate to the frontend directory, and start the development server.
+```powershell
+cd frontend
+npm run dev
+```
+
+---
+**Current Status:** Functional. Ready for further feature enhancements.
