@@ -3,17 +3,27 @@ import requests
 import json
 
 # High priority keywords
-KEYWORDS_CRITICAL = [
-    r"exam", r"deadline", r"fees", r"registration", r"hall ticket", 
+KEYWORDS_ACADEMIC = [
+    r"exam", r"deadline", r"fees", r"hall ticket", 
     r"admit card", r"schedule", r"viva", r"submission", r"official announcement",
     r"university", r"college", r"department"
+]
+
+KEYWORDS_PLACEMENT = [
+    r"placement", r"interview", r"shortlisted", r"registration", r"hackwithinfy"
 ]
 
 def rule_based_classify(subject, snippet):
     """Returns (category, importance) if match found, else (None, None)."""
     text = (subject + " " + snippet).lower()
     
-    for pattern in KEYWORDS_CRITICAL:
+    # Check Placement first
+    for pattern in KEYWORDS_PLACEMENT:
+        if re.search(pattern, text):
+            return "Placement", 10
+            
+    # Check Academic
+    for pattern in KEYWORDS_ACADEMIC:
         if re.search(pattern, text):
             return "Urgent/Academic", 9
             
@@ -26,30 +36,25 @@ def rule_based_classify(subject, snippet):
 def ai_classify(subject, snippet):
     """Call Ollama for advanced classification and summarization."""
     prompt = f"""
-    You are an AI Email Assistant for a college student.
-    Classify the following email and provide a short summary.
-
-    EMAIL SUBJECT: {subject}
-    EMAIL SNIPPET: {snippet}
-
-    Return ONLY a JSON object with this exact structure:
-    {{
-      "priority": 0-10,
-      "category": "Exam|Important|General|Spam",
-      "summary": "1-sentence summary of the email"
-    }}
+    Email: {subject} | {snippet}
+    Classify for a student. Priority (0-10), Category (Placement, Exam, Important, General, Spam), Summary (1-sentence).
+    Return JSON: {{"priority": int, "category": string, "summary": string}}
     """
 
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
             json={
-                "model": "llama3.2:1b",
+                "model": "gemma3:1b",
                 "prompt": prompt,
                 "stream": False,
-                "format": "json" # Ensure Ollama returns valid JSON
+                "format": "json",
+                "options": {
+                    "num_predict": 128,
+                    "temperature": 0.3
+                }
             },
-            timeout=30
+            timeout=20
         )
         
         if response.status_code == 200:

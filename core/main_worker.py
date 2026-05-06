@@ -1,5 +1,6 @@
 import time
-from core.fetcher import fetch_and_process_emails
+from core.fetcher import fetch_all_google_accounts
+from core.imap_fetcher import fetch_imap_emails
 from core.database import SessionLocal, Email
 from plyer import notification
 import schedule
@@ -15,7 +16,8 @@ def notify_user(email_subject, sender):
 
 def run_sync():
     print(f"\n--- Sync Started at {time.strftime('%H:%M:%S')} ---")
-    fetch_and_process_emails(max_results=20)
+    fetch_all_google_accounts()
+    fetch_imap_emails()
     
     # Check for new high-priority emails to notify
     db = SessionLocal()

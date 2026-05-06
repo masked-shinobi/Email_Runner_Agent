@@ -7,6 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        main: 'var(--bg-main)',
+        sidebar: 'var(--bg-sidebar)',
+        card: 'var(--bg-card)',
+        chat: 'var(--bg-chat)',
+        'input-bg': 'var(--bg-input)',
+        primary: 'var(--text-primary)',
+        secondary: 'var(--text-secondary)',
+        muted: 'var(--text-muted)',
+        'border-base': 'var(--border-color)',
+        'border-subtle': 'var(--border-subtle)',
         indigo: {
           500: '#6366f1',
           600: '#4f46e5',

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.routes import emails, chat, sync
+from api.routes import emails, chat, sync, config
 
 app = FastAPI(title="AI Email Assistant API")
 
@@ -17,6 +17,7 @@ app.add_middleware(
 app.include_router(emails.router)
 app.include_router(chat.router)
 app.include_router(sync.router)
+app.include_router(config.router)
 
 @app.get("/")
 def read_root():

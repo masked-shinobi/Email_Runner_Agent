@@ -17,6 +17,7 @@ frontend/*.local
 # Secrets & Config (Gmail API - DO NOT COMMIT SENSITIVE DATA)
 credentials.json
 token.json
+tokens/
 .env
 .env.local
 
